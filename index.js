@@ -1,5 +1,14 @@
+var mysql = require('mysql');
+
 var jsORM = {};
 var string = require('string-formatter');
+
+jsORM.session = function(dbconfig){
+	var self = this instanceof jsORM.session ? this : Object.create(jsORM.session.prototype);
+
+	self.dbconfig = dbconfig;
+	return self;
+}
 
 jsORM.tableMap = function(tableName) {
     var self = this instanceof jsORM.tableMap ? this : Object.create(jsORM.tableMap.prototype);
@@ -45,13 +54,18 @@ function queryBuild(query) {
 }
 
 function executeQuery(sqlQuery, callback) {
+    var connection = mysql.createConnection(dbconfig);
 
-    // tmp
-    var err = null;
-    var result = sqlQuery;
-    //
+    connection.query(sqlQuery, function(err, rows) {
+        // connected! (unless `err` is set)
+        if (err) {
+            callback(err);
+        } else {
+            callback(null, result);
+        };
+    });
 
-    callback(err, result);
+    connection.end();
 }
 
 jsORM.query.prototype.select = function(callback) {

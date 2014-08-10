@@ -1,3 +1,10 @@
+var dbconfig = {
+		host: "db4free.net",
+		user: "testdbgithub",
+		password: "dfybkffqc5",
+		database: "dbgithub"
+	};
+
 var jsORM = require('../index.js');
 
 var userMap = jsORM.tableMap('User')
