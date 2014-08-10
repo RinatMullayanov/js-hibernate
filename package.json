@@ -1,0 +1,32 @@
+{
+  "name": "js-hiberante",
+  "version": "0.1.0",
+  "description": "JSHibernate is a mature, open source object-relational mapper for the JS",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RinatMullayanov/string-format.git"
+  },
+  "keywords": [
+    "orm",
+    "hibernate",
+    "nhibernate",
+    "database",
+    "mysql"
+  ],
+  "author": {
+    "name": "Rinat Mullayanov",
+    "email": "nutsgamedev@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RinatMullayanov/string-format/issues"
+  },
+  "homepage": "https://github.com/RinatMullayanov/string-format"
+}
