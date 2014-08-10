@@ -1,11 +1,15 @@
-function TableMap(tableName) {
+var jsORM = {};
+
+jsORM.TableMap = function (tableName) {
     this.tableName = tableName;
     return this;
 }
 
-TableMap.prototype.ColumnMap = function(objProperty, tableProperty) {
+jsORM.TableMap.prototype.ColumnMap = function(objProperty, tableProperty) {
 	this.columnsMap = this.columnsMap || [];
 	this.columnsMap[objProperty] = tableProperty;
 
 	return this;
 };
+
+module.exports = jsORM;
