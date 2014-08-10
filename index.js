@@ -1,5 +1,5 @@
 var jsORM = {};
-var stringFormat = require('string-formatter');
+var string = require('string-formatter');
 
 jsORM.tableMap = function(tableName) {
     var self = this instanceof jsORM.tableMap ? this : Object.create(jsORM.tableMap.prototype);
@@ -38,6 +38,9 @@ jsORM.query.prototype.select = function() {
     // remove last comma
     var lastComma = sqlQuery.lastIndexOf(',');
     sqlQuery = sqlQuery.substring(0, lastComma);
+
+    sqlQuery = string.format(sqlQuery, map);
+    sqlQuery += ' from ' + self.map.tableName;
 
     return sqlQuery;
 }
