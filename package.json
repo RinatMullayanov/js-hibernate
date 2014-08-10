@@ -1,6 +1,6 @@
 {
-  "name": "js-hiberante",
-  "version": "0.1.0",
+  "name": "js-hibernate",
+  "version": "0.2.0",
   "description": "JSHibernate is a mature, open source object-relational mapper for the JS",
   "main": "index.js",
   "directories": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/RinatMullayanov/string-format.git"
+    "url": "https://github.com/RinatMullayanov/js-hibernate.git"
   },
   "keywords": [
     "orm",
@@ -26,7 +26,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RinatMullayanov/string-format/issues"
+    "url": "https://github.com/RinatMullayanov/js-hibernate/issues"
   },
-  "homepage": "https://github.com/RinatMullayanov/string-format"
+  "homepage": "https://github.com/RinatMullayanov/js-hibernate"
 }
