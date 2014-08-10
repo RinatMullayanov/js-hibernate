@@ -28,8 +28,7 @@ jsORM.query = function(tableMap) {
 function queryBuild(query) {
     // generate sql
     var sqlQuery = 'select ';
-    var queryTmp = query;
-    var map = queryTmp.map.columnMaps;
+    var map = query.map.columnMaps;
 
     for (var prop in map) {
         if (!map.hasOwnProperty(prop)) continue;
@@ -40,7 +39,7 @@ function queryBuild(query) {
     sqlQuery = sqlQuery.substring(0, lastComma);
 
     sqlQuery = string.format(sqlQuery, map);
-    sqlQuery += ' from ' + queryTmp.map.tableName;
+    sqlQuery += ' from ' + query.map.tableName;
 
     return sqlQuery;
 }
