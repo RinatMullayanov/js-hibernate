@@ -1,4 +1,4 @@
 js-hibernate
 ============
 
-Analog NHibenater
+JSHibernate is a mature, open source object-relational mapper for the JS.
