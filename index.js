@@ -64,14 +64,14 @@ function queryBuild(tblMap) {
 
     for (var prop in map) {
         if (!map.hasOwnProperty(prop)) continue;
-        sqlQuery += '{' + prop + '}, ';
+        sqlQuery += '`{' + prop + '}`, ';
     }
     // remove last comma
     var lastComma = sqlQuery.lastIndexOf(',');
     sqlQuery = sqlQuery.substring(0, lastComma);
 
     sqlQuery = string.format(sqlQuery, map);
-    sqlQuery += ' from ' + tblMap.table;
+    sqlQuery += ' from `' + tblMap.table +'`';
 
     return sqlQuery;
 }
