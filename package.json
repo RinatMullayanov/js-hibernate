@@ -1,6 +1,6 @@
 {
   "name": "js-hibernate",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "JSHibernate is a mature, open source object-relational mapper for the JS",
   "main": "index.js",
   "directories": {
