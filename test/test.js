@@ -1,3 +1,5 @@
+var ex = require('../error.js');
+
 var dbconfig = {
     host: "db4free.net",
     user: "testdbgithub",
@@ -17,3 +19,25 @@ var userMap = session.tableMap('User')
 var sqlQuery = session.query(userMap).select(function(err, result) {
     if (err === null) console.log(result);
 });
+
+// check unique table
+try {
+    var userMap2 = session.tableMap('User');
+} catch (e) {
+    if (e instanceof ex.TableMapDuplicateError) {
+        console.log('table map duplicate');
+    }
+}
+
+// check unique table
+try {
+    var session2 = jsORM.session(dbconfig);
+
+    var userMapDuplicateColumnsCheck = session2.tableMap('User')
+        .columnMap('id', 'id')
+        .columnMap('id', 'id');
+} catch (e) {
+    if (e instanceof ex.ColumnMapDuplicateError) {
+        console.log('column map duplicate');
+    }
+}

@@ -1,6 +1,8 @@
 var mysql = require('mysql');
 var string = require('string-formatter');
 
+var e = require('./error.js');
+
 var jsORM = {};
 
 function createSession(dbconfig) {
@@ -17,7 +19,9 @@ function createTableMap(tableName) {
 
         var map = Object.create(createTableMap.prototype);
         map.table = tableName;
-        // todo: check unique!
+        // check unique!
+        if (session.mappings[tableName]) throw new e.TableMapDuplicateError(tableName);
+
         session.mappings[tableName] = map;
 
         return map;
@@ -30,12 +34,14 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
     var map = this;
 
     map.columnMaps = map.columnMaps || {};
+    // check unique!
+    if (map.columnMaps[objProperty]) throw new e.ColumnMapDuplicateError(objProperty);
+
     map.columnMaps[objProperty] = tableProperty;
 
     return this;
 };
 createSession.prototype.tableMap = createTableMap;
-
 
 function createQuery(tblMap) {
     // check instance 
@@ -71,7 +77,7 @@ function queryBuild(tblMap) {
     sqlQuery = sqlQuery.substring(0, lastComma);
 
     sqlQuery = string.format(sqlQuery, map);
-    sqlQuery += ' from `' + tblMap.table +'`';
+    sqlQuery += ' from `' + tblMap.table + '`';
 
     return sqlQuery;
 }
