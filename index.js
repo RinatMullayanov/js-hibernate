@@ -25,11 +25,11 @@ jsORM.query = function(tableMap) {
     }
 }
 
-jsORM.query.prototype.select = function() {
+function queryBuild(query) {
     // generate sql
     var sqlQuery = 'select ';
-    var self = this;
-    var map = self.map.columnMaps;
+    var queryTmp = query;
+    var map = queryTmp.map.columnMaps;
 
     for (var prop in map) {
         if (!map.hasOwnProperty(prop)) continue;
@@ -40,9 +40,26 @@ jsORM.query.prototype.select = function() {
     sqlQuery = sqlQuery.substring(0, lastComma);
 
     sqlQuery = string.format(sqlQuery, map);
-    sqlQuery += ' from ' + self.map.tableName;
+    sqlQuery += ' from ' + queryTmp.map.tableName;
 
     return sqlQuery;
+}
+
+function executeQuery(sqlQuery, callback) {
+
+    // tmp
+    var err = null;
+    var result = sqlQuery;
+    //
+
+    callback(err, result);
+}
+
+jsORM.query.prototype.select = function(callback) {
+    var self = this;
+    var sql = queryBuild(self);
+
+    executeQuery(sql, callback);
 }
 
 module.exports = jsORM;
