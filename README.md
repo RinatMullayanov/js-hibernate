@@ -4,10 +4,10 @@ js-hibernate
 JSHibernate is a mature, open source object-relational mapper for the JS.
 
     var dbconfig = {
-        host: "db4free.net",
-        user: "testdbgithub",
-        password: "dfybkffqc5",
-        database: "dbgithub"
+        host: "your-mysql-host",
+        user: "your-mysql-user",
+        password: "your-mysql-password",
+        database: "your-mysql-db"
     };
 
     var jsORM = require('../index.js');
