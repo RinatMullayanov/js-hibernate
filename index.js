@@ -1,43 +1,66 @@
 var mysql = require('mysql');
-
-var jsORM = {};
 var string = require('string-formatter');
 
-jsORM.session = function(dbconfig){
-	var self = this instanceof jsORM.session ? this : Object.create(jsORM.session.prototype);
+var jsORM = {};
 
-	self.dbconfig = dbconfig;
-	return self;
-}
+function createSession(dbconfig) {
+    var self = this instanceof createSession ? this : Object.create(createSession.prototype);
 
-jsORM.tableMap = function(tableName) {
-    var self = this instanceof jsORM.tableMap ? this : Object.create(jsORM.tableMap.prototype);
-
-    self.tableName = tableName;
+    self.dbConfig = dbconfig;
+    self.mappings = {};
     return self;
 }
 
-jsORM.tableMap.prototype.columnMap = function(objProperty, tableProperty) {
-    this.columnMaps = this.columnMaps || {};
-    this.columnMaps[objProperty] = tableProperty;
+function createTableMap(tableName) {
+    if (this instanceof createSession) {
+        var session = this;
+
+        var map = Object.create(createTableMap.prototype);
+        map.table = tableName;
+        // todo: check unique!
+        session.mappings[tableName] = map;
+
+        return map;
+    }
+
+    return "undefined";
+}
+
+createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
+    var map = this;
+
+    map.columnMaps = map.columnMaps || {};
+    map.columnMaps[objProperty] = tableProperty;
 
     return this;
 };
+createSession.prototype.tableMap = createTableMap;
 
-jsORM.query = function(tableMap) {
+
+function createQuery(tblMap) {
     // check instance 
-    if (tableMap instanceof jsORM.tableMap) {
-        var self = this instanceof jsORM.query ? this : Object.create(jsORM.query.prototype);
+    var self = this;
+    if (self instanceof createSession && tblMap instanceof createTableMap) {
+        var query = Object.create(createQuery.prototype);
+        query.session = self;
+        query.tableMap = tblMap;
 
-        self.map = tableMap;
-        return self;
-    }
-}
+        return query;
+    };
+};
+createSession.prototype.query = createQuery;
 
-function queryBuild(query) {
+createQuery.prototype.select = function(callback) {
+    var config = this;
+    var sql = queryBuild(config.tableMap);
+
+    executeQuery(config.session, sql, callback);
+};
+
+function queryBuild(tblMap) {
     // generate sql
     var sqlQuery = 'select ';
-    var map = query.map.columnMaps;
+    var map = tblMap.columnMaps;
 
     for (var prop in map) {
         if (!map.hasOwnProperty(prop)) continue;
@@ -48,31 +71,25 @@ function queryBuild(query) {
     sqlQuery = sqlQuery.substring(0, lastComma);
 
     sqlQuery = string.format(sqlQuery, map);
-    sqlQuery += ' from ' + query.map.tableName;
+    sqlQuery += ' from ' + tblMap.table;
 
     return sqlQuery;
 }
 
-function executeQuery(sqlQuery, callback) {
-    var connection = mysql.createConnection(dbconfig);
+function executeQuery(session, sqlQuery, callback) {
+    var connection = mysql.createConnection(session.dbConfig);
 
     connection.query(sqlQuery, function(err, rows) {
         // connected! (unless `err` is set)
         if (err) {
             callback(err);
         } else {
-            callback(null, result);
+            callback(null, rows);
         };
     });
 
     connection.end();
 }
 
-jsORM.query.prototype.select = function(callback) {
-    var self = this;
-    var sql = queryBuild(self);
-
-    executeQuery(sql, callback);
-}
-
+jsORM.session = createSession;
 module.exports = jsORM;
