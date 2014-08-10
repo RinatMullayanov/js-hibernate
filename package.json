@@ -28,5 +28,8 @@
   "bugs": {
     "url": "https://github.com/RinatMullayanov/js-hibernate/issues"
   },
-  "homepage": "https://github.com/RinatMullayanov/js-hibernate"
+  "homepage": "https://github.com/RinatMullayanov/js-hibernate",
+  "dependencies": {
+    "mysql": "^2.4.2"
+  }
 }
