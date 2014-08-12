@@ -23,7 +23,7 @@ module.exports = function(grunt) {
 					launch_in_dev: ['PhantomJS'],
 					before_test: 'grunt jshint',
 					serve_files: [
-						'./*.js',
+						'index.js',						
 						'test/**/*.js'
 					],
 					watch_files: [
@@ -37,7 +37,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-testem')
+	grunt.loadNpmTasks('grunt-contrib-testem');
 
 	grunt.registerTask('default', ['testem:run:unit']);
 };
