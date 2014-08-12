@@ -32,5 +32,8 @@
   "dependencies": {
     "mysql": "^2.4.2",
     "string-formatter": "^0.2.0"
+  },
+  "devDependencies": {
+    "grunt-contrib-testem": "^0.5.16"
   }
 }
