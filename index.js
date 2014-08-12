@@ -52,8 +52,8 @@ function createQuery(tblMap) {
         query.tableMap = tblMap;
 
         return query;
-    };
-};
+    }
+}
 createSession.prototype.query = createQuery;
 
 createQuery.prototype.select = function(callback) {
@@ -61,6 +61,7 @@ createQuery.prototype.select = function(callback) {
     var sql = queryBuild(config.tableMap);
 
     executeQuery(config.session, sql, callback);
+    return sql;    
 };
 
 function queryBuild(tblMap) {
@@ -91,7 +92,7 @@ function executeQuery(session, sqlQuery, callback) {
             callback(err);
         } else {
             callback(null, rows);
-        };
+        }
     });
 
     connection.end();
