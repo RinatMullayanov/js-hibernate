@@ -1,1 +1,1 @@
-node --debug-brk ./JS/js-hibernate/test/test.js 
+node --debug-brk ./JS/js-hibernate/test/manual_test.js 
