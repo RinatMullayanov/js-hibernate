@@ -20,21 +20,19 @@ function createSession(dbconfig) {
 }
 
 function createTableMap(tableName) {
-    // if (this instanceof createSession) {
-        // var session = this;
+    if (this instanceof createSession) {
+        var session = this;
 
-        // var map = Object.create(createTableMap.prototype);
-        // map.table = tableName;
-        // // check unique!
-        // if (session.mappings[tableName]) throw new e.TableMapDuplicateError(tableName);
-        // session.mappings[tableName] = map;
+        var map = Object.create(createTableMap.prototype);
+        map.table = tableName;
+        // check unique!
+        if (session.mappings[tableName]) throw new e.TableMapDuplicateError(tableName);
+        session.mappings[tableName] = map;
 
-        // return map;        
-    // }
+        return map;        
+    }
 
-    // return "undefined";
-
-    return "la";
+    return "undefined";
 }
 
 function EqualFunc(value) {
