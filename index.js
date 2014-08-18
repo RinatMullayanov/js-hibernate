@@ -39,9 +39,9 @@ function OperatorFunc(value, operator) {
     var self = this; // columnMap
 
     var where = "`" + self.columnName + "` " + operator + " '{0}'";
-    self.MapLink.Query.whereCondition += string.format(where, value);
+    self.TableMapLink.Query.whereCondition += string.format(where, value);
 
-    return self.MapLink;
+    return self.TableMapLink;
 }
 
 function ConditionFunc(value, condition) {
@@ -62,7 +62,7 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
     map.columnMaps[objProperty] = tableProperty;
     // for queries
     map[objProperty] = {
-        MapLink: map, // link on tableMap
+        TableMapLink: map, // link on tableMap
         columnName: tableProperty,        
         Equal: function(value) {
             return OperatorFunc.call(map[objProperty], value, '=');

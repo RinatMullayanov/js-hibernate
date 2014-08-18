@@ -18,7 +18,7 @@ var userMap = session.tableMap('User')
 
 var sqlQuery = session.query(userMap).select();
 sqlQuery.then(function(result) {
-    console.log('from promise:');
+    console.log('test select:');
     console.log(result);
 }).catch(function(error) {
     console.log('Error: ' + error);
@@ -30,7 +30,7 @@ var sqlQuery2 = session.query(userMap)
     );
     
 sqlQuery2.then(function(result) {
-    console.log('from promise where Equal test:');
+    console.log('test where = :');
     console.log(result);
 }).catch(function(error) {
     console.log('Error: ' + error);
@@ -44,7 +44,21 @@ var sqlQuery3 = session.query(userMap)
     );
 
 sqlQuery3.then(function(result) {
-    console.log('from promise where Equal And Equal test:');
+    console.log('test where = and = :');
+    console.log(result);
+}).catch(function(error) {
+    console.log('Error: ' + error);
+});
+
+var sqlQuery4 = session.query(userMap)
+    .where(
+        userMap.id.More(0)
+        .And()
+        .id.Less(4)
+    );
+
+sqlQuery4.then(function(result) {
+    console.log('test where > and < :');
     console.log(result);
 }).catch(function(error) {
     console.log('Error: ' + error);
