@@ -1,3 +1,8 @@
+// из-за того что тесты запускаются в другом контексте
+// require не известная функция и толком файл не парсится!
+// точнее не парсятся те функции которые используют переменные которые
+// мы пытались инициализировать через require()
+// надо смотреть как другие тесты пишут
 var mysql = require('mysql');
 var string = require('string-formatter');
 var RSVP = require('rsvp');
@@ -15,20 +20,21 @@ function createSession(dbconfig) {
 }
 
 function createTableMap(tableName) {
-    if (this instanceof createSession) {
-        var session = this;
+    // if (this instanceof createSession) {
+        // var session = this;
 
-        var map = Object.create(createTableMap.prototype);
-        map.table = tableName;
-        // check unique!
-        if (session.mappings[tableName]) throw new e.TableMapDuplicateError(tableName);
+        // var map = Object.create(createTableMap.prototype);
+        // map.table = tableName;
+        // // check unique!
+        // if (session.mappings[tableName]) throw new e.TableMapDuplicateError(tableName);
+        // session.mappings[tableName] = map;
 
-        session.mappings[tableName] = map;
+        // return map;        
+    // }
 
-        return map;
-    }
+    // return "undefined";
 
-    return "undefined";
+    return "la";
 }
 
 function EqualFunc(value) {
