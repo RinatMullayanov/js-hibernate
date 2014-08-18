@@ -36,9 +36,20 @@ function createTableMap(tableName) {
 }
 
 function EqualFunc(value) {
-    var self = this;
+    var self = this;    
+
     var where = "`" + self.columnName + "` = '{0}' ";
-    return string.format(where, value);
+    self.whereCondition = string.format(where, value);
+
+    return self;
+}
+
+function AndFunc(value) {
+    var self = this;
+
+    if(self.whereCondition) self.whereCondition += ' and ';   
+
+    return self;
 }
 
 createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
@@ -52,7 +63,8 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
     // for queries
     map[objProperty] = {
         columnName: tableProperty,
-        Equal: EqualFunc
+        Equal: EqualFunc,
+        And: AndFunc
     };
 
     return this;
@@ -62,6 +74,7 @@ createSession.prototype.tableMap = createTableMap;
 function createQuery(tblMap) {
     // check instance 
     var self = this;
+
     if (self instanceof createSession && tblMap instanceof createTableMap) {
         var query = Object.create(createQuery.prototype);
         query.session = self;
@@ -83,7 +96,7 @@ function selectFunc(where) {
 
     var config = this;
     var sql = queryBuild(config.tableMap);
-    if (where) sql += ' where ' + where;
+    if (where) sql += ' where ' + where.whereCondition;
 
     return executeQueryPromise(config.session, sql);
 }
