@@ -64,6 +64,22 @@ sqlQuery4.then(function(result) {
     console.log('Error: ' + error);
 });
 
+var sqlQuery5 = session.query(userMap)
+    .where(
+        userMap.name.Equal('Rinat') // =
+        .And() // and
+        .id.More(0). // >
+        And() // and
+        .id.LessEqual(4) // <=
+    );
+    
+sqlQuery5.then(function(result) {
+    console.log('test where = and > and <= :');
+    console.log(result);
+}).catch(function(error) {
+    console.log('Error: ' + error);
+});
+
 // check unique table
 try {
     var userMap2 = session.tableMap('User');
