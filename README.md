@@ -1,5 +1,4 @@
-js-hibernate
-============
+# JS-Hibernate
 
 JSHibernate is a mature, open source object-relational mapper for the JS.
 
@@ -17,6 +16,13 @@ Support conditions:
 - **And**: and sql condition
 - **Or**: or sql condition
 
+### Install
+
+```sh
+$ npm install js-hibernate
+```
+
+### Usage
 #### 1. Config connection to database
 ```javascript
 var dbconfig = {
