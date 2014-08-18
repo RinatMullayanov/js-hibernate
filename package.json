@@ -31,6 +31,7 @@
   "homepage": "https://github.com/RinatMullayanov/js-hibernate",
   "dependencies": {
     "mysql": "^2.4.2",
+    "rsvp": "^3.0.13",
     "string-formatter": "^0.2.0"
   },
   "devDependencies": {
