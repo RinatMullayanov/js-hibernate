@@ -38,18 +38,18 @@ function createTableMap(tableName) {
 function EqualFunc(value) {
     var self = this;    
 
-    var where = "`" + self.columnName + "` = '{0}' ";
-    self.whereCondition = string.format(where, value);
+    var where = "`" + self.columnName + "` = '{0}'";
+    self.MapLink.Query.whereCondition += string.format(where, value);
 
-    return self;
+    return self.MapLink;
 }
 
 function AndFunc(value) {
     var self = this;
 
-    if(self.whereCondition) self.whereCondition += ' and ';   
+    if(self.Query.whereCondition) self.Query.whereCondition += ' and ';   
 
-    return self;
+    return self; // it's tableMap
 }
 
 createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
@@ -62,9 +62,9 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
     map.columnMaps[objProperty] = tableProperty;
     // for queries
     map[objProperty] = {
+        MapLink: map, // link on tableMap
         columnName: tableProperty,
-        Equal: EqualFunc,
-        And: AndFunc
+        Equal: EqualFunc
     };
 
     return this;
@@ -78,7 +78,12 @@ function createQuery(tblMap) {
     if (self instanceof createSession && tblMap instanceof createTableMap) {
         var query = Object.create(createQuery.prototype);
         query.session = self;
+        query.whereCondition = ""; // store where condition for current query
+
         query.tableMap = tblMap;
+        // link on current query
+        query.tableMap.Query = query;
+        query.tableMap.And = AndFunc;
 
         return query;
     }
@@ -96,7 +101,7 @@ function selectFunc(where) {
 
     var config = this;
     var sql = queryBuild(config.tableMap);
-    if (where) sql += ' where ' + where.whereCondition;
+    if (where) sql += ' where ' + where.Query.whereCondition;
 
     return executeQueryPromise(config.session, sql);
 }

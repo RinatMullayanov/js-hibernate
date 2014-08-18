@@ -40,7 +40,7 @@ var sqlQuery3 = session.query(userMap)
     .where(
         userMap.id.Equal(3)
         .And()
-        .userMap.name.Equal('Den')
+        .name.Equal('Den')
     );
 
 sqlQuery3.then(function(result) {
