@@ -31,6 +31,12 @@ function createTableMap(tableName) {
     return "undefined";
 }
 
+function EqualFunc(value) {
+    var self = this;
+    var where = "`" + self.columnName + "` = '{0}' ";
+    return string.format(where, value);
+}
+
 createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
     var map = this;
 
@@ -39,6 +45,11 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
     if (map.columnMaps[objProperty]) throw new e.ColumnMapDuplicateError(objProperty);
 
     map.columnMaps[objProperty] = tableProperty;
+    // for queries
+    map[objProperty] = {
+        columnName: tableProperty,
+        Equal: EqualFunc
+    };
 
     return this;
 };
@@ -57,13 +68,23 @@ function createQuery(tblMap) {
 }
 createSession.prototype.query = createQuery;
 
-createQuery.prototype.select = function(callback) {
+// sugar
+createQuery.prototype.where = function(where) {
+
+    var self = this;
+    return selectFunc.call(self, where);
+}
+
+function selectFunc(where) {
 
     var config = this;
     var sql = queryBuild(config.tableMap);
+    if (where) sql += ' where ' + where;
 
     return executeQueryPromise(config.session, sql);
 }
+
+createQuery.prototype.select = selectFunc;
 
 function queryBuild(tblMap) {
     // generate sql

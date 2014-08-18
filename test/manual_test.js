@@ -16,16 +16,20 @@ var userMap = session.tableMap('User')
     .columnMap('name', 'shortName')
     .columnMap('phone', 'tel');
 
-var sqlQuery = session.query(userMap).select();
-sqlQuery.then(function(result){
-    console.log('from promise:');
+// var sqlQuery = session.query(userMap).select();
+// sqlQuery.then(function(result){
+//     console.log('from promise:');
+//     console.log(result);
+// }).catch(function(error){
+//     console.log('Error: ' + error);
+// });
+
+var sqlQuery2 = session.query(userMap).where(userMap.id.Equal(1));
+sqlQuery2.then(function(result){
+    console.log('from promise where test:');
     console.log(result);
 }).catch(function(error){
     console.log('Error: ' + error);
-});
-
-var sqlQuery = session.query(userMap).select(function(err, result) {
-    if (err === null) console.log(result);
 });
 
 // check unique table
