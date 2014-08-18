@@ -29,10 +29,36 @@ Using Promises/A+.
         console.log('Error: ' + error);
     });
 
-    var sqlQuery2 = session.query(userMap).where(userMap.id.Equal(1));
-    sqlQuery2.then(function(result){
-        console.log('from promise where test:');
+    var sqlQuery = session.query(userMap).select();
+    sqlQuery.then(function(result) {
+        console.log('from promise:');
         console.log(result);
-    }).catch(function(error){
+    }).catch(function(error) {
+        console.log('Error: ' + error);
+    });
+
+    var sqlQuery2 = session.query(userMap)
+        .where(
+            userMap.id.Equal(1)
+        );
+    
+    sqlQuery2.then(function(result) {
+        console.log('from promise where Equal test:');
+        console.log(result);
+    }).catch(function(error) {
+        console.log('Error: ' + error);
+    });
+
+    var sqlQuery3 = session.query(userMap)
+        .where(
+            userMap.id.Equal(3)
+            .And()
+            .name.Equal('Den')
+    );
+
+    sqlQuery3.then(function(result) {
+        console.log('from promise where Equal And Equal test:');
+        console.log(result);
+    }).catch(function(error) {
         console.log('Error: ' + error);
     });
