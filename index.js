@@ -29,31 +29,31 @@ function createTableMap(tableName) {
         if (session.mappings[tableName]) throw new e.TableMapDuplicateError(tableName);
         session.mappings[tableName] = map;
 
-        return map;        
+        return map;
     }
 
     return "undefined";
 }
 
-function EqualFunc(value) {
-    var self = this;    
+function OperatorFunc(value, operator) {
+    var self = this; // columnMap
 
-    var where = "`" + self.columnName + "` = '{0}'";
-    self.MapLink.Query.whereCondition += string.format(where, value);
+    var where = "`" + self.columnName + "` " + operator + " '{0}'";
+    self.TableMapLink.Query.whereCondition += string.format(where, value);
 
-    return self.MapLink;
+    return self.TableMapLink;
 }
 
-function AndFunc(value) {
-    var self = this;
+function ConditionFunc(value, condition) {
+    var self = this; // tableMap
 
-    if(self.Query.whereCondition) self.Query.whereCondition += ' and ';   
+    if (self.Query.whereCondition) self.Query.whereCondition += ' ' + condition + ' ';
 
-    return self; // it's tableMap
+    return self; 
 }
 
 createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
-    var map = this;
+    var map = this; // tableMap
 
     map.columnMaps = map.columnMaps || {};
     // check unique!
@@ -62,9 +62,24 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
     map.columnMaps[objProperty] = tableProperty;
     // for queries
     map[objProperty] = {
-        MapLink: map, // link on tableMap
-        columnName: tableProperty,
-        Equal: EqualFunc
+        TableMapLink: map, // link on tableMap
+        columnName: tableProperty,        
+        Equal: function(value) {
+            return OperatorFunc.call(map[objProperty], value, '=');
+        },              
+        More: function(value) {
+            return OperatorFunc.call(map[objProperty], value, '>');
+        },
+        Less: function(value) {
+            return OperatorFunc.call(map[objProperty], value, '<');
+        },
+        MoreEqual: function(value) {
+            return OperatorFunc.call(map[objProperty], value, '>=');
+        },
+        LessEqual: function(value) {
+            return OperatorFunc.call(map[objProperty], value, '<=');
+        }
+
     };
 
     return this;
@@ -73,7 +88,7 @@ createSession.prototype.tableMap = createTableMap;
 
 function createQuery(tblMap) {
     // check instance 
-    var self = this;
+    var self = this; // session
 
     if (self instanceof createSession && tblMap instanceof createTableMap) {
         var query = Object.create(createQuery.prototype);
@@ -83,7 +98,12 @@ function createQuery(tblMap) {
         query.tableMap = tblMap;
         // link on current query
         query.tableMap.Query = query;
-        query.tableMap.And = AndFunc;
+        query.tableMap.And = function(value) {
+            return ConditionFunc.call(query.tableMap, value, 'and');
+        };
+        query.tableMap.Or = function(value) {
+            return ConditionFunc.call(query.tableMap, value, 'or');
+        };
 
         return query;
     }
@@ -93,13 +113,13 @@ createSession.prototype.query = createQuery;
 // sugar
 createQuery.prototype.where = function(where) {
 
-    var self = this;
+    var self = this; // query
     return selectFunc.call(self, where);
 }
 
 function selectFunc(where) {
 
-    var config = this;
+    var config = this; // query
     var sql = queryBuild(config.tableMap);
     if (where) sql += ' where ' + where.Query.whereCondition;
 
