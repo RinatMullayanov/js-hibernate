@@ -29,14 +29,14 @@ function createTableMap(tableName) {
         if (session.mappings[tableName]) throw new e.TableMapDuplicateError(tableName);
         session.mappings[tableName] = map;
 
-        return map;        
+        return map;
     }
 
     return "undefined";
 }
 
 function EqualFunc(value) {
-    var self = this;    
+    var self = this;
 
     var where = "`" + self.columnName + "` = '{0}'";
     self.MapLink.Query.whereCondition += string.format(where, value);
@@ -44,16 +44,16 @@ function EqualFunc(value) {
     return self.MapLink;
 }
 
-function AndFunc(value) {
-    var self = this;
+function TemplateConditionFunc(value, condition) {
+    var self = this; // tableMap
 
-    if(self.Query.whereCondition) self.Query.whereCondition += ' and ';   
+    if (self.Query.whereCondition) self.Query.whereCondition += ' ' + condition + ' ';
 
     return self; // it's tableMap
 }
 
 createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
-    var map = this;
+    var map = this; // tableMap
 
     map.columnMaps = map.columnMaps || {};
     // check unique!
@@ -73,7 +73,7 @@ createSession.prototype.tableMap = createTableMap;
 
 function createQuery(tblMap) {
     // check instance 
-    var self = this;
+    var self = this; // session
 
     if (self instanceof createSession && tblMap instanceof createTableMap) {
         var query = Object.create(createQuery.prototype);
@@ -83,7 +83,12 @@ function createQuery(tblMap) {
         query.tableMap = tblMap;
         // link on current query
         query.tableMap.Query = query;
-        query.tableMap.And = AndFunc;
+        query.tableMap.And = function(value) {
+            return TemplateConditionFunc.call(query.tableMap, value, 'and');
+        };
+        query.tableMap.Or = function(value) {
+            return TemplateConditionFunc.call(query.tableMap, value, 'or');
+        };
 
         return query;
     }
@@ -93,13 +98,13 @@ createSession.prototype.query = createQuery;
 // sugar
 createQuery.prototype.where = function(where) {
 
-    var self = this;
+    var self = this; // query
     return selectFunc.call(self, where);
 }
 
 function selectFunc(where) {
 
-    var config = this;
+    var config = this; // query
     var sql = queryBuild(config.tableMap);
     if (where) sql += ' where ' + where.Query.whereCondition;
 
