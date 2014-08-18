@@ -18,6 +18,7 @@ var userMap = session.tableMap('User')
 
 var sqlQuery = session.query(userMap).select();
 sqlQuery.then(function(result){
+    console.log('from promise:');
     console.log(result);
 }).catch(function(error){
     console.log('Error: ' + error);
