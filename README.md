@@ -2,6 +2,7 @@ js-hibernate
 ============
 
 JSHibernate is a mature, open source object-relational mapper for the JS.
+Using Promises/A+.
 
     var dbconfig = {
         host: "your-mysql-host",
@@ -19,6 +20,18 @@ JSHibernate is a mature, open source object-relational mapper for the JS.
         .columnMap('name', 'shortName')
         .columnMap('phone', 'tel');
 
-    var sqlQuery = session.query(userMap).select(function(err, result) {
-        if (err === null) console.log(result);
+    var sqlQuery = session.query(userMap).select();
+    sqlQuery.then(function(result){
+        console.log('from promise:');
+        console.log(result);
+    }).catch(function(error){
+        console.log('Error: ' + error);
+    });
+
+    var sqlQuery2 = session.query(userMap).where(userMap.id.Equal(1));
+    sqlQuery2.then(function(result){
+        console.log('from promise where test:');
+        console.log(result);
+    }).catch(function(error){
+        console.log('Error: ' + error);
     });
