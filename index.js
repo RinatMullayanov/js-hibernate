@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var string = require('string-formatter');
+var RSVP = require('rsvp');
 
 var e = require('./error.js');
 
@@ -57,12 +58,12 @@ function createQuery(tblMap) {
 createSession.prototype.query = createQuery;
 
 createQuery.prototype.select = function(callback) {
+
     var config = this;
     var sql = queryBuild(config.tableMap);
 
-    executeQuery(config.session, sql, callback);
-    return sql;    
-};
+    return executeQueryPromise(config.session, sql);
+}
 
 function queryBuild(tblMap) {
     // generate sql
@@ -83,19 +84,23 @@ function queryBuild(tblMap) {
     return sqlQuery;
 }
 
-function executeQuery(session, sqlQuery, callback) {
-    var connection = mysql.createConnection(session.dbConfig);
+function executeQueryPromise(session, sqlQuery) {
 
-    connection.query(sqlQuery, function(err, rows) {
-        // connected! (unless `err` is set)
-        if (err) {
-            callback(err);
-        } else {
-            callback(null, rows);
-        }
+    return new RSVP.Promise(function(resolve, reject) {
+        var connection = mysql.createConnection(session.dbConfig);
+
+        connection.query(sqlQuery, function(err, rows) {
+            // connected! (unless `err` is set)
+            if (!err) {
+                resolve(rows);
+            } else {
+                reject(err);
+            }
+        });
+
+        connection.end();
+
     });
-
-    connection.end();
 }
 
 jsORM.session = createSession;

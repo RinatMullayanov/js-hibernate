@@ -16,6 +16,13 @@ var userMap = session.tableMap('User')
     .columnMap('name', 'shortName')
     .columnMap('phone', 'tel');
 
+var sqlQuery = session.query(userMap).select();
+sqlQuery.then(function(result){
+    console.log(result);
+}).catch(function(error){
+    console.log('Error: ' + error);
+});
+
 var sqlQuery = session.query(userMap).select(function(err, result) {
     if (err === null) console.log(result);
 });

@@ -1,0 +1,1 @@
+node-inspector --web-port=8989
