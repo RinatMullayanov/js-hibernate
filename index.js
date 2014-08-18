@@ -35,16 +35,16 @@ function createTableMap(tableName) {
     return "undefined";
 }
 
-function EqualFunc(value) {
+function OperatorFunc(value, operator) {
     var self = this;
 
-    var where = "`" + self.columnName + "` = '{0}'";
+    var where = "`" + self.columnName + "` " + operator + " '{0}'";
     self.MapLink.Query.whereCondition += string.format(where, value);
 
     return self.MapLink;
 }
 
-function TemplateConditionFunc(value, condition) {
+function ConditionFunc(value, condition) {
     var self = this; // tableMap
 
     if (self.Query.whereCondition) self.Query.whereCondition += ' ' + condition + ' ';
@@ -64,7 +64,9 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
     map[objProperty] = {
         MapLink: map, // link on tableMap
         columnName: tableProperty,
-        Equal: EqualFunc
+        Equal: function(value) {
+            return OperatorFunc.call(map[objProperty], value, '=');
+        }
     };
 
     return this;
@@ -84,10 +86,10 @@ function createQuery(tblMap) {
         // link on current query
         query.tableMap.Query = query;
         query.tableMap.And = function(value) {
-            return TemplateConditionFunc.call(query.tableMap, value, 'and');
+            return ConditionFunc.call(query.tableMap, value, 'and');
         };
         query.tableMap.Or = function(value) {
-            return TemplateConditionFunc.call(query.tableMap, value, 'or');
+            return ConditionFunc.call(query.tableMap, value, 'or');
         };
 
         return query;
