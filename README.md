@@ -6,6 +6,17 @@ JSHibernate is a mature, open source object-relational mapper for the JS.
 *There works only with MySQL. Plans to work with Oracle and MS SQL*
 
 Methods **select()** and **where()** return Promises/A+.
+Support operators:
+- **Equal**: = sql operator
+- **More**: > sql operator
+- **Less**: < sql operator
+- **MoreEqual**: >= sql operator
+- **LessEqual**: <= sql operator
+
+Support conditions:
+- **And**: and sql condition
+- **Or**: or sql condition
+
 #### 1. Config connection to database
 ```javascript
 var dbconfig = {
