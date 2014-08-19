@@ -49,9 +49,9 @@ var userMap = session.tableMap('User')
 
 #### 4. Simple request - select all rows
 ```javascript
-var sqlQuery = session.query(userMap).select();
-sqlQuery.then(function(result){
-    console.log(result);
+var query = session.query(userMap).select();
+query.then(function(result){
+    console.log(result); // array with result
 }).catch(function(error){
     console.log('Error: ' + error);
 });
@@ -59,7 +59,7 @@ sqlQuery.then(function(result){
 
 #### 5. Sample work with several operators and boolean operators
 ```javascript
-var sqlQuery = session.query(userMap)
+var query = session.query(userMap)
     .where(
         userMap.name.Equal('Rinat') // =
         .And() // and
@@ -68,8 +68,8 @@ var sqlQuery = session.query(userMap)
         .id.LessEqual(4) // <=
     );
     
-sqlQuery.then(function(result) {
-    console.log(result);
+query.then(function(result) {
+    console.log(result); // array with result
 }).catch(function(error) {
     console.log('Error: ' + error);
 });
