@@ -6,8 +6,8 @@ var e = require('./error.js');
 
 var jsORM = {};
 
-function createSession(dbconfig) {
-    var self = this instanceof createSession ? this : Object.create(createSession.prototype);
+function Session(dbconfig) {
+    var self = this instanceof Session ? this : Object.create(Session.prototype);
 
     self.dbConfig = dbconfig;
     self.mappings = {};
@@ -15,7 +15,7 @@ function createSession(dbconfig) {
 }
 
 function createTableMap(tableName) {
-    if (this instanceof createSession) {
+    if (this instanceof Session) {
         var session = this;
 
         var map = Object.create(createTableMap.prototype);
@@ -81,13 +81,13 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
 
     return this;
 };
-createSession.prototype.tableMap = createTableMap;
+Session.prototype.tableMap = createTableMap;
 
 function createQuery(tblMap) {
     // check instance 
     var self = this; // session
 
-    if (self instanceof createSession && tblMap instanceof createTableMap) {
+    if (self instanceof Session && tblMap instanceof createTableMap) {
         var query = Object.create(createQuery.prototype);
         query.session = self;
         query.whereCondition = ""; // store where condition for current query
@@ -105,7 +105,7 @@ function createQuery(tblMap) {
         return query;
     }
 }
-createSession.prototype.query = createQuery;
+Session.prototype.query = createQuery;
 
 // sugar
 createQuery.prototype.where = function(where) {
@@ -163,5 +163,5 @@ function executeQueryPromise(session, sqlQuery) {
     });
 }
 
-jsORM.session = createSession;
+jsORM.session = Session;
 module.exports = jsORM;
