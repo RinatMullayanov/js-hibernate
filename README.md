@@ -1,6 +1,6 @@
 # JS-Hibernate
 
-JSHibernate is a mature, open source object-relational mapper for the JS.
+JSHibernate is a simple object-relational mapper for the JS.
 
 *There works only with MySQL. Plans to work with Oracle and MS SQL*
 
@@ -42,13 +42,15 @@ var session = jsORM.session(dbconfig);
 #### 3. Create Table Mapping
 ```javascript
 var userMap = session.tableMap('User')
-    .columnMap('id', 'id')
+    // columnMap(object-name-property, table-name-property)
+    .columnMap('id', 'id') 
     .columnMap('name', 'shortName')
     .columnMap('phone', 'tel');
 ```
 
 #### 4. Simple request - select all rows
 ```javascript
+// select * from `User` 
 var query = session.query(userMap).select();
 query.then(function(result){
     console.log(result); // array with result
@@ -59,6 +61,8 @@ query.then(function(result){
 
 #### 5. Sample work with several operators and boolean operators
 ```javascript
+// select * from `User` 
+// where `shortName` = 'Rinat' and `id` > '0' and `id` <= 4
 var query = session.query(userMap)
     .where(
         userMap.name.Equal('Rinat') // =
