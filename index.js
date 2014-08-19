@@ -14,11 +14,11 @@ function Session(dbconfig) {
     return self;
 }
 
-function createTableMap(tableName) {
+function TableMap(tableName) {
     if (this instanceof Session) {
         var session = this;
 
-        var map = Object.create(createTableMap.prototype);
+        var map = Object.create(TableMap.prototype);
         map.table = tableName;
         // check unique!
         if (session.mappings[tableName]) throw new e.TableMapDuplicateError(tableName);
@@ -47,7 +47,7 @@ function ConditionFunc(value, condition) {
     return self;
 }
 
-createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
+TableMap.prototype.columnMap = function(objProperty, tableProperty) {
     var map = this; // tableMap
 
     map.columnMaps = map.columnMaps || {};
@@ -81,13 +81,13 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
 
     return this;
 };
-Session.prototype.tableMap = createTableMap;
+Session.prototype.tableMap = TableMap;
 
 function createQuery(tblMap) {
     // check instance 
     var self = this; // session
 
-    if (self instanceof Session && tblMap instanceof createTableMap) {
+    if (self instanceof Session && tblMap instanceof TableMap) {
         var query = Object.create(createQuery.prototype);
         query.session = self;
         query.whereCondition = ""; // store where condition for current query
