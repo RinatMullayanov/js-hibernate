@@ -1,4 +1,6 @@
-# JS-Hibernate
+# JS-Hibernate 
+
+### Current version: 1.0.2
 
 JSHibernate is a simple object-relational mapper for the JS.
 
@@ -11,6 +13,7 @@ Support operators:
 - **Less**: < sql operator
 - **MoreEqual**: >= sql operator
 - **LessEqual**: <= sql operator
+- **Like**: like sql operator
 
 Support conditions:
 - **And**: and sql condition
