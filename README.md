@@ -42,7 +42,8 @@ var session = jsORM.session(dbconfig);
 #### 3. Create Table Mapping
 ```javascript
 var userMap = session.tableMap('User')
-    .columnMap('id', 'id') // (object-name-property, table-name-property)
+    // columnMap(object-name-property, table-name-property)
+    .columnMap('id', 'id') 
     .columnMap('name', 'shortName')
     .columnMap('phone', 'tel');
 ```
