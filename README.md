@@ -42,7 +42,7 @@ var session = jsORM.session(dbconfig);
 #### 3. Create Table Mapping
 ```javascript
 var userMap = session.tableMap('User')
-    .columnMap('id', 'id')
+    .columnMap('id', 'id') // (object-name-property, table-name-property)
     .columnMap('name', 'shortName')
     .columnMap('phone', 'tel');
 ```
@@ -61,7 +61,7 @@ query.then(function(result){
 #### 5. Sample work with several operators and boolean operators
 ```javascript
 // select * from `User` 
-// where `shortName` = 'Rinat' and `id` = '0' and `id` <= 4
+// where `shortName` = 'Rinat' and `id` > '0' and `id` <= 4
 var query = session.query(userMap)
     .where(
         userMap.name.Equal('Rinat') // =
