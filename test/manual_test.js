@@ -1,4 +1,4 @@
-var ex = require('../error.js');
+var ex = require('../lib/error.js');
 
 var dbconfig = {
     host: "db4free.net",
