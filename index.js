@@ -44,7 +44,7 @@ function ConditionFunc(value, condition) {
 
     if (self.Query.whereCondition) self.Query.whereCondition += ' ' + condition + ' ';
 
-    return self; 
+    return self;
 }
 
 createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
@@ -58,10 +58,10 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
     // for queries
     map[objProperty] = {
         TableMapLink: map, // link on tableMap
-        columnName: tableProperty,        
+        columnName: tableProperty,
         Equal: function(value) {
             return OperatorFunc.call(map[objProperty], value, '=');
-        },              
+        },
         More: function(value) {
             return OperatorFunc.call(map[objProperty], value, '>');
         },
@@ -73,8 +73,10 @@ createTableMap.prototype.columnMap = function(objProperty, tableProperty) {
         },
         LessEqual: function(value) {
             return OperatorFunc.call(map[objProperty], value, '<=');
+        },
+        Like: function(value) {
+            return OperatorFunc.call(map[objProperty], value, 'like');
         }
-
     };
 
     return this;
