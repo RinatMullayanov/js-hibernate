@@ -1,6 +1,6 @@
 # JS-Hibernate 
 
-### Current version: 1.0.5
+### Current version: 1.0.6
 
 JSHibernate is a simple object-relational mapper for the JS.
 
@@ -19,6 +19,7 @@ Support conditions:
 - **And**: and sql condition
 - **Or**: or sql condition
 
+-**executeSql**:  execution of arbitrary sql query
 ### Install
 
 ```sh
@@ -74,6 +75,17 @@ var query = session.query(userMap)
         And() // and
         .id.LessEqual(4) // <=
     );
+    
+query.then(function(result) {
+    console.log(result); // array with result
+}).catch(function(error) {
+    console.log('Error: ' + error);
+});
+```
+#### 6. Execute of arbitrary sql query
+```javascript
+var sql = 'select * from `User`'
+var query = session.executeSql(sql);
     
 query.then(function(result) {
     console.log(result); // array with result
