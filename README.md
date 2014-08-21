@@ -19,7 +19,8 @@ Support conditions:
 - **And**: and sql condition
 - **Or**: or sql condition
 
--**executeSql**:  execution of arbitrary sql query
+- **executeSql**:  execution of arbitrary sql query
+
 ### Install
 
 ```sh
