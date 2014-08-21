@@ -19,6 +19,7 @@ Support conditions:
 - **And**: and sql condition
 - **Or**: or sql condition
 
+Other API methods:
 - **executeSql**:  execution of arbitrary sql query
 
 ### Install
