@@ -18,7 +18,7 @@ var userMap = session.tableMap('User')
 
 var sqlQuery = session.query(userMap).select();
 sqlQuery.then(function(result) {
-    console.log('test select:');
+    console.log('test select: ');
     console.log(result);
 }).catch(function(error) {
     console.log('Error: ' + error);
@@ -33,7 +33,7 @@ sqlQuery2.then(function(result) {
     console.log('test where = :');
     console.log(result);
 }).catch(function(error) {
-    console.log('Error: ' + error);
+    console.log('test where = : ' + error);
 });
 
 var sqlQuery3 = session.query(userMap)
@@ -44,10 +44,10 @@ var sqlQuery3 = session.query(userMap)
     );
 
 sqlQuery3.then(function(result) {
-    console.log('test where = and = :');
+    console.log('test where = and = : ');
     console.log(result);
 }).catch(function(error) {
-    console.log('Error: ' + error);
+    console.log('test where = and = : ' + error);
 });
 
 var sqlQuery4 = session.query(userMap)
@@ -58,10 +58,10 @@ var sqlQuery4 = session.query(userMap)
     );
 
 sqlQuery4.then(function(result) {
-    console.log('test where > and < :');
+    console.log('test where > and < : ');
     console.log(result);
 }).catch(function(error) {
-    console.log('Error: ' + error);
+    console.log('test where > and < : ' + error);
 });
 
 var sqlQuery5 = session.query(userMap)
@@ -74,10 +74,19 @@ var sqlQuery5 = session.query(userMap)
     );
     
 sqlQuery5.then(function(result) {
-    console.log('test where = and > and <= :');
+    console.log('test where = and > and <= : ');
     console.log(result);
 }).catch(function(error) {
-    console.log('Error: ' + error);
+    console.log('test where = and > and <= : ' + error);
+});
+
+var sql = 'select * from `User`'
+var sqlQuery6 = session.executeSql(sql);
+    
+sqlQuery6.then(function(result) {
+    console.log(result); // array with result
+}).catch(function(error) {
+    console.log('ExecuteSql: ' + error);
 });
 
 // check unique table
