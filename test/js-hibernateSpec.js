@@ -13,16 +13,24 @@ describe('jsORM', function() {
         };
 
         session = jsORM.session(dbconfig);
-    })
 
-    it('simple test', function() {
-
-        var userMap = session.tableMap('User')
+        userMap = session.tableMap('User')
             .columnMap('id', 'id')
             .columnMap('name', 'shortName')
             .columnMap('phone', 'tel');
+    })
 
-        console.log(JSON.stringify(userMap.columnMaps));
+    it('simple test', function() {
         expect(userMap.columnMaps.id).to.equal('id');
+    });
+
+    it('Async test select * from', function(done) {
+        var sqlQuery = session.query(userMap).select();
+        sqlQuery.then(function(result) {
+            // todo: add check
+            done();
+        }).catch(function(error) {
+            done(error);
+        });
     });
 });
