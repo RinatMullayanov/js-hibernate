@@ -1,17 +1,22 @@
 var expect = require("chai").expect;
 var jsORM = require('../lib/js-hibernate.js');
 
+var dbconfig, session;
 describe('jsORM', function() {
-    it('simple test', function() {
-
-        var dbconfig = {
+    // run before every test
+    beforeEach(function() {
+        dbconfig = {
             host: "db4free.net",
             user: "testdbgithub",
             password: "dfybkffqc5",
             database: "dbgithub"
         };
 
-        var session = jsORM.session(dbconfig);
+        session = jsORM.session(dbconfig);
+    })
+
+    it('simple test', function() {
+
         var userMap = session.tableMap('User')
             .columnMap('id', 'id')
             .columnMap('name', 'shortName')
