@@ -2,9 +2,9 @@ var expect = require("chai").expect;
 var jsORM = require('../lib/js-hibernate.js');
 
 var dbconfig, session;
-describe('jsORM', function() {
+describe('jsORM', function () {
     // run before every test
-    beforeEach(function() {
+    beforeEach(function () {
         dbconfig = {
             host: "db4free.net",
             user: "testdbgithub",
@@ -20,17 +20,58 @@ describe('jsORM', function() {
             .columnMap('phone', 'tel');
     })
 
-    it('simple test', function() {
+    it('simple test', function () {
         expect(userMap.columnMaps.id).to.equal('id');
     });
 
-    it('Async test select * from', function(done) {
+    it('Async test select * from', function (done) {
         var sqlQuery = session.query(userMap).select();
-        sqlQuery.then(function(result) {
+        sqlQuery.then(function (result) {
             // todo: add check
+            // because this objects have constructor and equal will be break
+            var resultPure = JSON.parse(JSON.stringify(result));
+            var usersTest = [
+                {
+                    'id': 1,
+                    'shortName': 'Rinat',
+                    'tel': '123-456'
+                },
+                {
+                    'id': 3,
+                    'shortName': 'Den',
+                    'tel': '234-567'
+                }
+            ];
+            // deep say to use value equal instead of reference equal
+            expect(usersTest).to.deep.equal(resultPure);
             done();
-        }).catch(function(error) {
+        }).catch(function (error) {
             done(error);
         });
     });
+
+    it('Async test select * from where `id` = 1', function (done) {
+        var sqlQuery = session.query(userMap).where(
+            userMap.id.Equal(1)
+        );
+        sqlQuery.then(function (result) {
+            // todo: add check
+            // because this objects have constructor and equal will be break
+            var resultPure = JSON.parse(JSON.stringify(result));
+            var usersTest = [
+                {
+                    'id': 1,
+                    'shortName': 'Rinat',
+                    'tel': '123-456'
+                }
+            ];
+            // deep say to use value equal instead of reference equal
+            expect(usersTest).to.deep.equal(resultPure);
+            done();
+        }).catch(function (error) {
+            done(error);
+        });
+    });
+
+
 });
