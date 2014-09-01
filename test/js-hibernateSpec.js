@@ -1,5 +1,7 @@
 var expect = require("chai").expect;
+
 var jsORM = require('../lib/js-hibernate.js');
+var ex = require('../lib/error.js');
 
 var dbconfig, session;
 describe('jsORM', function () {
@@ -183,5 +185,23 @@ describe('jsORM', function () {
         });
     });
 
+    it('check throw TableMapDuplicateError', function () {
+        // check unique table
+        var fn = function () {
+            var userMap2 = session.tableMap('User');
+        }
+        expect(fn).to.throw(ex.TableMapDuplicateError);
+    });
+
+    it('check throw ColumnMapDuplicateError', function () {
+        var session2 = jsORM.session(dbconfig);
+        // check unique table
+        var fn = function () {
+            var userMapDuplicateColumnsCheck = session2.tableMap('User')
+                .columnMap('id', 'id')
+                .columnMap('id', 'id');
+        }
+        expect(fn).to.throw(ex.ColumnMapDuplicateError);
+    });
 
 });
