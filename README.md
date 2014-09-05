@@ -1,6 +1,6 @@
 # JS-Hibernate 
 
-### Current version: 1.0.8
+### Current version: 1.0.9
 
 JSHibernate is a simple object-relational mapper for the JS.
 
