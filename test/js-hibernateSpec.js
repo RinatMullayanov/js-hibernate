@@ -3,7 +3,7 @@ var expect = require("chai").expect;
 var jsORM = require('../lib/js-hibernate.js');
 var ex = require('../lib/error.js');
 
-var dbconfig, session;
+var dbconfig, session, userMap;
 describe('jsORM', function () {
     // run before every test
     beforeEach(function () {
@@ -21,6 +21,20 @@ describe('jsORM', function () {
             .columnMap('name', 'shortName')
             .columnMap('phone', 'tel');
     })
+
+    it('Insert', function (done) {
+        var someUser = {
+            'id': 10,
+            'name': 'newUser',
+            'phone': '555-555'
+        };
+        userMap.Insert(someUser).then(function (result) {
+            console.log('insert result: ' + result);
+            done();
+        }).catch(function (error) {
+            done(error);
+        });
+    });
 
     it('simple test', function () {
         expect(userMap.columnMaps.id).to.equal('id');
