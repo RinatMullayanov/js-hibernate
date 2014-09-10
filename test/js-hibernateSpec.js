@@ -17,7 +17,7 @@ describe('jsORM', function () {
         session = jsORM.session(dbconfig);
 
         userMap = session.tableMap('User')
-            .columnMap('id', 'id')
+            .columnMap('id', 'id', { isAutoIncrement: true })
             .columnMap('name', 'shortName')
             .columnMap('phone', 'tel');
     })
