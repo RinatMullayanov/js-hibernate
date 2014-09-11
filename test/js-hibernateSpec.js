@@ -3,7 +3,7 @@ var expect = require("chai").expect;
 var jsORM = require('../lib/js-hibernate.js');
 var ex = require('../lib/error.js');
 
-var dbconfig, session;
+var dbconfig, session, userMap;
 describe('jsORM', function () {
     // run before every test
     beforeEach(function () {
@@ -17,7 +17,7 @@ describe('jsORM', function () {
         session = jsORM.session(dbconfig);
 
         userMap = session.tableMap('User')
-            .columnMap('id', 'id')
+            .columnMap('id', 'id', { isAutoIncrement: true })
             .columnMap('name', 'shortName')
             .columnMap('phone', 'tel');
     })
@@ -202,6 +202,31 @@ describe('jsORM', function () {
                 .columnMap('id', 'id');
         }
         expect(fn).to.throw(ex.ColumnMapDuplicateError);
+    });
+
+    it('Insert', function (done) {
+        var someUser = {
+            'name': 'newUser',
+            'phone': '555-555'
+        };
+        userMap.Insert(someUser).then(function (result) {
+            var results = {};
+            results.insertRowCount = result.affectedRows;
+
+            var sql = 'delete from `User` where `shortName` = \'newUser\''
+            var sqlQuery = session.executeSql(sql);
+            sqlQuery.then(function (resultDel) {
+                results.delRowCount = resultDel.affectedRows;
+
+                expect(results).deep.equal({insertRowCount: 1, delRowCount: 1});
+                done();
+            }).catch(function (error) {
+                done(error);
+            });
+
+        }).catch(function (error) {
+            done(error);
+        });
     });
 
 });
