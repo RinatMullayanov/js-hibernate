@@ -1,8 +1,7 @@
 # JS-Hibernate 
 
-### Current version: 1.0.10
+### Current version: 1.0.10 [NEW]
 **Awesome new function** - easy and usable **Insert** for entity.
-
 Details at the end of the documentation.
 
 JSHibernate is a simple object-relational mapper for the JS.
