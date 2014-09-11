@@ -108,6 +108,7 @@ var someUser = {
     'name': 'newUser',
     'phone': '555-555'
 };
+// insert into `User` (`shortName`, `tel`) values ('newUser', '555-555')
 userMap.Insert(someUser).then(function (result) {
     console.log('inserted: ' + result.affectedRows);
 }).catch(function (error) {
