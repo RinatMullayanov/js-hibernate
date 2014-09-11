@@ -1,7 +1,7 @@
 # JS-Hibernate 
 
 ### Current version: 1.0.10
-#### Awesome new function - easy and usable Insert for entity.
+**Awesome new function** - easy and usable **Insert** for entity.
 
 Details at the end of the documentation.
 
