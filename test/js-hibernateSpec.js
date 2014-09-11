@@ -22,20 +22,6 @@ describe('jsORM', function () {
             .columnMap('phone', 'tel');
     })
 
-    it('Insert', function (done) {
-        var someUser = {
-            'id': 10,
-            'name': 'newUser',
-            'phone': '555-555'
-        };
-        userMap.Insert(someUser).then(function (result) {
-            console.log('insert result: ' + result);
-            done();
-        }).catch(function (error) {
-            done(error);
-        });
-    });
-
     it('simple test', function () {
         expect(userMap.columnMaps.id).to.equal('id');
     });
@@ -216,6 +202,31 @@ describe('jsORM', function () {
                 .columnMap('id', 'id');
         }
         expect(fn).to.throw(ex.ColumnMapDuplicateError);
+    });
+
+    it('Insert', function (done) {
+        var someUser = {
+            'name': 'newUser',
+            'phone': '555-555'
+        };
+        userMap.Insert(someUser).then(function (result) {
+            var results = {};
+            results.insertRowCount = result.affectedRows;
+
+            var sql = 'delete from `User` where `shortName` = \'newUser\''
+            var sqlQuery = session.executeSql(sql);
+            sqlQuery.then(function (resultDel) {
+                results.delRowCount = resultDel.affectedRows;
+
+                expect(results).deep.equal({insertRowCount: 1, delRowCount: 1});
+                done();
+            }).catch(function (error) {
+                done(error);
+            });
+
+        }).catch(function (error) {
+            done(error);
+        });
     });
 
 });

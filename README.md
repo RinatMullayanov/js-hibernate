@@ -1,6 +1,8 @@
 # JS-Hibernate 
 
-### Current version: 1.0.9
+### Current version: 1.0.10
+Awesome new function - easy and usable Insert for entity.
+Details at the end of the documentation.
 
 JSHibernate is a simple object-relational mapper for the JS.
 
@@ -48,7 +50,7 @@ var session = jsORM.session(dbconfig);
 #### 3. Create Table Mapping
 ```javascript
 var userMap = session.tableMap('User')
-    // columnMap(object-name-property, table-name-property)
+    // columnMap(object-name-property, table-name-property, optional-property-config)
     .columnMap('id', 'id') 
     .columnMap('name', 'shortName')
     .columnMap('phone', 'tel');
@@ -92,6 +94,23 @@ var query = session.executeSql(sql);
 query.then(function(result) {
     console.log(result); // array with result
 }).catch(function(error) {
+    console.log('Error: ' + error);
+});
+```
+#### 7. Insert Entity
+```javascript
+userMap = session.tableMap('User')
+    .columnMap('id', 'id', { isAutoIncrement: true })
+    .columnMap('name', 'shortName')
+    .columnMap('phone', 'tel');
+
+var someUser = {
+    'name': 'newUser',
+    'phone': '555-555'
+};
+userMap.Insert(someUser).then(function (result) {
+    console.log('inserted: ' + result.affectedRows);
+}).catch(function (error) {
     console.log('Error: ' + error);
 });
 ```
