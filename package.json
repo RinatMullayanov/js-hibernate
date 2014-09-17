@@ -1,6 +1,6 @@
 {
   "name": "js-hibernate",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "JSHibernate is a simple object-relational mapper for the JS",
   "main": "index.js",
   "directories": {
