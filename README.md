@@ -38,7 +38,7 @@ var dbconfig = {
     user: "your-mysql-user",
     password: "your-mysql-password",
     database: "your-mysql-db"
-    };
+};
 ```
 
 #### 2. Init session
